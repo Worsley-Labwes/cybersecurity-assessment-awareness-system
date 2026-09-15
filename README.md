@@ -1,4 +1,4 @@
-# CAAS — Cybersecurity Assessment and Awareness System
+# CAAS, Cybersecurity Assessment and Awareness System
 
 A lightweight Flask web application built for the research project
 *"Enhancing Network Security in Small and Medium Enterprises (SMEs) in
