@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="hero rounded-4 p-5 mb-5 text-center">
+    <h1 class="display-5 fw-bold">Enhancing Network Security for Windhoek SMEs</h1>
+    <p class="lead col-lg-8 mx-auto">
+        CAAS helps small and medium enterprises assess their cybersecurity posture,
+        train employees on security awareness, and detect basic network vulnerabilities
+        all in one lightweight, easy-to-use platform.
+    </p>
+    {% if current_user %}
+        <a href="{{ url_for('dashboard') }}" class="btn btn-lg btn-primary mt-2">Go to Dashboard</a>
+    {% else %}
+        <a href="{{ url_for('login') }}" class="btn btn-lg btn-primary mt-2">Login</a>
+        <a href="{{ url_for('register') }}" class="btn btn-lg btn-outline-secondary mt-2">Create Account</a>
+    {% endif %}
+</div>
+
+<div class="row g-4 mb-5">
+    <div class="col-md-3">
+        <div class="card h-100 feature-card">
+            <div class="card-body">
+                <div class="feature-icon">📋</div>
+                <h5 class="card-title">Assessment</h5>
+                <p class="card-text">Digitised cybersecurity checklist producing an instant security score and risk level.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 feature-card">
+            <div class="card-body">
+                <div class="feature-icon">🎓</div>
+                <h5 class="card-title">Training</h5>
+                <p class="card-text">Interactive quizzes covering phishing, malware, passwords, and more.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 feature-card">
+            <div class="card-body">
+                <div class="feature-icon">🔍</div>
+                <h5 class="card-title">Network Scan</h5>
+                <p class="card-text">Lightweight scanner flags risky open ports like FTP and Telnet.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 feature-card">
+            <div class="card-body">
+                <div class="feature-icon">📊</div>
+                <h5 class="card-title">Dashboard & Reports</h5>
+                <p class="card-text">Consolidated insights with exportable PDF, Excel, and CSV reports.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

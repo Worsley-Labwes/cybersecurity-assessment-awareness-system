@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block title %}Assessment{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">Cybersecurity Assessments</h2>
+    <a href="{{ url_for('assessment_new') }}" class="btn btn-primary">+ New Assessment</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle bg-white">
+        <thead class="table-dark">
+            <tr>
+                <th>Company</th>
+                <th>Sector</th>
+                <th>Security Score</th>
+                <th>Risk Level</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in assessments %}
+            <tr>
+                <td>{{ a['company_name'] }}</td>
+                <td>{{ a['sector'] }}</td>
+                <td>{{ a['security_score'] }}%</td>
+                <td>
+                    <span class="badge {{ 'bg-success' if a['risk_level']=='Low' else ('bg-warning text-dark' if a['risk_level']=='Medium' else 'bg-danger') }}">
+                        {{ a['risk_level'] }}
+                    </span>
+                </td>
+                <td>{{ a['created_at'] }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5" class="text-center text-muted py-4">No assessments recorded yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h5 class="fw-bold mt-5 mb-3">Registered SMEs</h5>
+<div class="table-responsive">
+    <table class="table table-sm table-bordered bg-white">
+        <thead class="table-light">
+            <tr><th>Company</th><th>Sector</th><th>Email</th><th>Phone</th></tr>
+        </thead>
+        <tbody>
+            {% for s in smes %}
+            <tr><td>{{ s['company_name'] }}</td><td>{{ s['sector'] }}</td><td>{{ s['email'] }}</td><td>{{ s['phone'] }}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

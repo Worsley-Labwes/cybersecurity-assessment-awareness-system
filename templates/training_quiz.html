@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block title %}{{ quiz.title }}{% endblock %}
+{% block content %}
+<a href="{{ url_for('training') }}" class="text-decoration-none">&larr; Back to Training</a>
+<h2 class="fw-bold mt-2 mb-3">{{ quiz.title }}</h2>
+
+{% if not submitted %}
+<div class="card mb-4">
+    <div class="card-body">
+        <p>{{ quiz.article }}</p>
+    </div>
+</div>
+
+<form method="POST">
+    <div class="row g-3 mb-3">
+        <div class="col-md-4">
+            <label class="form-label">Your Name</label>
+            <input type="text" name="employee_name" class="form-control" required>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Department</label>
+            <input type="text" name="department" class="form-control">
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-control">
+        </div>
+    </div>
+
+    {% for q in quiz.questions %}
+    {% set qi = loop.index0 %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <p class="fw-semibold">{{ loop.index }}. {{ q.q }}</p>
+            {% for opt in q.options %}
+            {% set oi = loop.index0 %}
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="q{{ qi }}" id="q{{ qi }}-{{ oi }}" value="{{ oi }}" required>
+                <label class="form-check-label" for="q{{ qi }}-{{ oi }}">{{ opt }}</label>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary btn-lg">Submit Quiz</button>
+</form>
+{% else %}
+<div class="card">
+    <div class="card-body text-center">
+        <h3 class="fw-bold">{{ 'Well done! 🎉' if status == 'Passed' else 'Keep practicing 📘' }}</h3>
+        <p class="lead">You scored <strong>{{ score }}%</strong> ({{ correct }}/{{ total }} correct)</p>
+        <span class="badge fs-6 {{ 'bg-success' if status=='Passed' else 'bg-danger' }}">{{ status }}</span>
+        <div class="mt-4">
+            <a href="{{ url_for('training_quiz', topic=topic) }}" class="btn btn-outline-primary">Retake Quiz</a>
+            <a href="{{ url_for('training') }}" class="btn btn-primary">Back to Training</a>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

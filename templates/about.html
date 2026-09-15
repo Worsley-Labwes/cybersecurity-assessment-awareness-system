@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block title %}About{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <h2 class="fw-bold mb-3">About This Project</h2>
+        <p>
+            The Cybersecurity Assessment and Awareness System (CAAS) is a research and
+            development project aimed at enhancing the network security posture of
+            small and medium enterprises (SMEs) in Windhoek. Many SMEs operate with
+            limited IT budgets and staff, leaving them exposed to preventable threats
+            such as weak passwords, missing backups, and unpatched, misconfigured services.
+        </p>
+        <p>
+            CAAS was built using the <strong>Prototyping Model</strong>: an initial
+            working version of the system was refined incrementally, in six stages,
+            based on stakeholder feedback, until it satisfied the functional
+            requirements identified through questionnaires, interviews, and
+            document analysis with participating SMEs.
+        </p>
+        <h5 class="mt-4">What CAAS Does</h5>
+        <ul>
+            <li>Runs a structured cybersecurity assessment and produces a security score and risk level</li>
+            <li>Delivers interactive awareness training with quizzes across 8 core topics</li>
+            <li>Performs a lightweight technical network scan and flags insecure open ports</li>
+            <li>Presents consolidated insights on a manager-facing dashboard</li>
+            <li>Exports assessment, training, and vulnerability reports as PDF, Excel, or CSV</li>
+        </ul>
+        <h5 class="mt-4">Technology Stack</h5>
+        <p>HTML, CSS, Bootstrap, JavaScript (frontend) &middot; Python/Flask (backend) &middot;
+        SQLite (database) &middot; Chart.js (dashboard charts) &middot;
+        Python socket/subprocess/ipaddress (network scanning)</p>
+    </div>
+</div>
+{% endblock %}

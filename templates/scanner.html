@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block title %}Network Scan{% endblock %}
+{% block content %}
+<h2 class="fw-bold mb-3">Network Vulnerability Scanner</h2>
+
+<div class="alert alert-warning">
+    <strong>Deployment note:</strong> when this app runs on a hosted cloud platform
+    (Render, PythonAnywhere, Replit), it can only reach devices that are publicly
+    accessible from that server &mdash; it cannot see devices on an SME's private
+    local network (e.g. 192.168.x.x). For a real SME site visit, run this module
+    locally (Anaconda/local Python) on a machine connected to that SME's network,
+    as the original project methodology specifies.
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="POST" class="row g-2 align-items-end">
+            <div class="col-md-8">
+                <label class="form-label">Target IP address or hostname</label>
+                <input type="text" name="target" class="form-control" placeholder="e.g. 192.168.1.1 or example.com" required>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary w-100">Run Scan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if result %}
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Scan Result: {{ result.device_name }} ({{ result.device_ip }})</h5>
+        {% if result.error %}
+            <p class="text-danger">{{ result.error }}</p>
+        {% else %}
+            <p>Reachable: <span class="badge {{ 'bg-success' if result.reachable else 'bg-secondary' }}">{{ 'Yes' if result.reachable else 'No' }}</span></p>
+            <p>Open Ports: {{ result.open_ports_named | join(', ') if result.open_ports_named else 'None found' }}</p>
+            {% if result.vulnerabilities %}
+            <div class="alert alert-danger mb-0">
+                <strong>Vulnerabilities flagged:</strong>
+                <ul class="mb-0">
+                    {% for v in result.vulnerabilities %}<li>{{ v }}</li>{% endfor %}
+                </ul>
+            </div>
+            {% else %}
+            <div class="alert alert-success mb-0">No known-risky ports detected on this scan.</div>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+<h5 class="fw-bold mb-3">Scan History</h5>
+<div class="table-responsive">
+    <table class="table table-hover bg-white align-middle">
+        <thead class="table-dark">
+            <tr><th>Device/IP</th><th>Name</th><th>Open Ports</th><th>Vulnerability</th><th>Date</th></tr>
+        </thead>
+        <tbody>
+            {% for s in history %}
+            <tr>
+                <td>{{ s['device_ip'] }}</td>
+                <td>{{ s['device_name'] }}</td>
+                <td>{{ s['open_ports'] }}</td>
+                <td>{{ s['vulnerability'] }}</td>
+                <td>{{ s['scan_date'] }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5" class="text-center text-muted py-4">No scans recorded yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

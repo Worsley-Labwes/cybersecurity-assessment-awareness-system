@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block title %}Reports{% endblock %}
+{% block content %}
+<h2 class="fw-bold mb-4">Reports</h2>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Assessment Summary</h5>
+                <p class="card-text text-muted">Company, sector, security score, and risk level for every assessment.</p>
+                <div class="btn-group w-100">
+                    <a href="{{ url_for('download_report', report_type='assessment', fmt='pdf') }}" class="btn btn-outline-danger">PDF</a>
+                    <a href="{{ url_for('download_report', report_type='assessment', fmt='excel') }}" class="btn btn-outline-success">Excel</a>
+                    <a href="{{ url_for('download_report', report_type='assessment', fmt='csv') }}" class="btn btn-outline-secondary">CSV</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Training Results</h5>
+                <p class="card-text text-muted">Employee quiz scores, pass/fail status, and completion dates.</p>
+                <div class="btn-group w-100">
+                    <a href="{{ url_for('download_report', report_type='training', fmt='pdf') }}" class="btn btn-outline-danger">PDF</a>
+                    <a href="{{ url_for('download_report', report_type='training', fmt='excel') }}" class="btn btn-outline-success">Excel</a>
+                    <a href="{{ url_for('download_report', report_type='training', fmt='csv') }}" class="btn btn-outline-secondary">CSV</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Vulnerability Report</h5>
+                <p class="card-text text-muted">Scanned devices, open ports, and flagged vulnerabilities.</p>
+                <div class="btn-group w-100">
+                    <a href="{{ url_for('download_report', report_type='vulnerability', fmt='pdf') }}" class="btn btn-outline-danger">PDF</a>
+                    <a href="{{ url_for('download_report', report_type='vulnerability', fmt='excel') }}" class="btn btn-outline-success">Excel</a>
+                    <a href="{{ url_for('download_report', report_type='vulnerability', fmt='csv') }}" class="btn btn-outline-secondary">CSV</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

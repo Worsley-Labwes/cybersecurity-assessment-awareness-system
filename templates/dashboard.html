@@ -1,0 +1,117 @@
+{% extends "layout.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h2 class="fw-bold mb-4">Dashboard</h2>
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="stat-card"><div class="stat-value">{{ stats.total_assessments }}</div><div class="stat-label">Assessments</div></div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="stat-card"><div class="stat-value">{{ stats.avg_score }}%</div><div class="stat-label">Avg. Security Score</div></div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="stat-card stat-danger"><div class="stat-value">{{ stats.high_risk }}</div><div class="stat-label">High-Risk SMEs</div></div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="stat-card stat-success"><div class="stat-value">{{ stats.completed_training }}</div><div class="stat-label">Trainings Passed</div></div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="stat-card stat-warning"><div class="stat-value">{{ stats.open_vulns }}</div><div class="stat-label">Open Vulnerabilities</div></div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="stat-card"><div class="stat-value">{{ stats.avg_quiz_score }}%</div><div class="stat-label">Avg. Quiz Score</div></div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-lg-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h6 class="card-title">Risk Level Distribution</h6>
+                <canvas id="riskPieChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card h-100">
+            <div class="card-body">
+                <h6 class="card-title">Security Score by SME</h6>
+                <canvas id="scoreBarChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">Score Trend Over Assessments</h6>
+                <canvas id="scoreLineChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title mb-3">Overall Progress</h6>
+                <label class="small text-muted">Average Security Score</label>
+                <div class="progress mb-3" style="height: 20px;">
+                    <div class="progress-bar bg-primary" style="width: {{ stats.avg_score }}%">{{ stats.avg_score }}%</div>
+                </div>
+                <label class="small text-muted">Average Quiz Score</label>
+                <div class="progress" style="height: 20px;">
+                    <div class="progress-bar bg-success" style="width: {{ stats.avg_quiz_score }}%">{{ stats.avg_quiz_score }}%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function loadCharts() {
+    const res = await fetch("{{ url_for('api_dashboard_data') }}");
+    const data = await res.json();
+
+    const riskLabels = Object.keys(data.risk_distribution);
+    const riskValues = Object.values(data.risk_distribution);
+    new Chart(document.getElementById('riskPieChart'), {
+        type: 'pie',
+        data: {
+            labels: riskLabels.length ? riskLabels : ['No data'],
+            datasets: [{
+                data: riskValues.length ? riskValues : [1],
+                backgroundColor: ['#dc3545', '#ffc107', '#198754', '#6c757d']
+            }]
+        }
+    });
+
+    const smeLabels = data.score_by_sme.map(s => s.company);
+    const smeScores = data.score_by_sme.map(s => s.score);
+    new Chart(document.getElementById('scoreBarChart'), {
+        type: 'bar',
+        data: {
+            labels: smeLabels.length ? smeLabels : ['No data'],
+            datasets: [{ label: 'Security Score (%)', data: smeScores.length ? smeScores : [0], backgroundColor: '#0d6efd' }]
+        },
+        options: { scales: { y: { beginAtZero: true, max: 100 } } }
+    });
+
+    new Chart(document.getElementById('scoreLineChart'), {
+        type: 'line',
+        data: {
+            labels: smeLabels.length ? smeLabels : ['No data'],
+            datasets: [{ label: 'Score Trend (%)', data: smeScores.length ? smeScores : [0], borderColor: '#20c997', tension: 0.3, fill: false }]
+        },
+        options: { scales: { y: { beginAtZero: true, max: 100 } } }
+    });
+}
+loadCharts();
+</script>
+{% endblock %}
